@@ -1,5 +1,5 @@
 from flask import Flask, request
-from flask_restful import Resource, Api
+from flask_restful import Resource, Api, reqparse
 from flask_jwt import JWT, jwt_required
 
 from security import authentication, identity
@@ -14,6 +14,12 @@ items = []
 
 
 class Item(Resource):
+
+    parser = reqparse.RequestParser()
+    parser.add_argument('price',
+                        type="float",
+                        required=True,
+                        help="This field cannot be left blank!")
 
     @jwt_required()
     def get(self, name):
